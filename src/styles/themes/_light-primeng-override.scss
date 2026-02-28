@@ -1,0 +1,56 @@
+// Defines CSS variable overrides mapped to PrimeNG's Lara Theme for Light Mode
+// This implements a robust token-based theme.
+
+:root {
+  // PrimeNG Primary Color Mapping
+  --primary-50: var(--blue-50);
+  --primary-100: var(--blue-100);
+  --primary-200: var(--blue-200);
+  --primary-300: var(--blue-300);
+  --primary-400: var(--blue-400);
+  --primary-500: var(--blue-500); // Main brand color
+  --primary-600: var(--blue-600);
+  --primary-700: var(--blue-700);
+  --primary-800: var(--blue-800);
+  --primary-900: var(--blue-900);
+
+  --primary-color: var(--primary-500);
+  --primary-color-text: #ffffff;
+
+  // PrimeNG Surface Mapping (Light Mode)
+  --surface-0: #ffffff;
+  --surface-50: var(--slate-50);
+  --surface-100: var(--slate-100);
+  --surface-200: var(--slate-200);
+  --surface-300: var(--slate-300);
+  --surface-400: var(--slate-400);
+  --surface-500: var(--slate-500);
+  --surface-600: var(--slate-600);
+  --surface-700: var(--slate-700);
+  --surface-800: var(--slate-800);
+  --surface-900: var(--slate-900);
+
+  // Surface Semantic Mappings
+  --surface-ground: var(--surface-50); // Background for main app
+  --surface-section: var(--surface-0); // Component wrapper background
+  --surface-card: var(--surface-0); // Card backgrounds
+  --surface-overlay: var(--surface-0); // Dropdowns, Dialogs
+  --surface-border: var(--surface-200); // Default Border
+  --surface-hover: var(--surface-100); // Hover states
+
+  // Text Semantic Mappings
+  --text-color: var(--surface-900); // Base text
+  --text-color-secondary: var(--surface-600); // Muted / Description text
+  --text-color-disabled: var(--surface-400); // Disabled text
+
+  // App Custom Specific Theme Variables
+  --bg-color: var(--surface-ground);
+  --text-main: var(--text-color);
+  --text-muted: var(--text-color-secondary);
+  --border-color: var(--surface-border);
+  --card-bg: var(--surface-card);
+  --img-bg: var(--surface-50);
+
+  // Border radius map
+  --border-radius: 12px;
+}

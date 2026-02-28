@@ -1,1 +1,64 @@
-/* You can add global styles to this file, and also import other style files */
+// --- Theme Token Architecture Setup ---
+@import 'styles/color-palette';
+@import 'styles/typography';
+@import 'styles/themes/light-primeng-override';
+@import 'styles/themes/dark-primeng-override';
+
+// --- PrimeNG Custom Global Overrides ---
+@import 'styles/primeng-overrides';
+
+// --- Global Application CSS Reset and Base Config ---
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+  border: 2px solid var(--bg-color);
+  /* fake padding */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Global focus state */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Base link styling */
+a {
+  color: var(--primary-500);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--text-main);
+}

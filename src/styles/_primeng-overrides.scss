@@ -1,0 +1,58 @@
+// Overrides physical CSS rules for PrimeNG components to enforce our premium token design
+
+.p-button {
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-semibold);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.75rem 1.5rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.p-inputtext {
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: var(--surface-section);
+  color: var(--text-color);
+  border: 1px solid var(--surface-border);
+  font-family: var(--font-family);
+
+  &:enabled:hover {
+    border-color: var(--primary-400);
+  }
+
+  &:enabled:focus {
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2); // Blue 500 w/ opacity
+    border-color: var(--primary-500);
+  }
+}
+
+.p-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.p-dialog {
+  .p-dialog-header {
+    background: var(--surface-card);
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  .p-dialog-content {
+    background: var(--surface-card);
+  }
+
+  .p-dialog-footer {
+    border-top: 1px solid var(--surface-border);
+    background: var(--surface-card);
+  }
+}

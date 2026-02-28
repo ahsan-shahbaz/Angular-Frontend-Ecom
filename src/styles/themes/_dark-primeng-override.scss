@@ -1,0 +1,42 @@
+// Defines CSS variable overrides mapped to PrimeNG's Lara Theme for Dark Mode
+// Activated automatically when body has .dark-theme
+
+body.dark-theme {
+  // PrimeNG Surface Mapping (Dark Mode Inversion)
+  --surface-0: #020617; // Deepest dark
+  --surface-50: var(--slate-900);
+  --surface-100: var(--slate-800);
+  --surface-200: var(--slate-700);
+  --surface-300: var(--slate-600);
+  --surface-400: var(--slate-500);
+  --surface-500: var(--slate-400);
+  --surface-600: var(--slate-300);
+  --surface-700: var(--slate-200);
+  --surface-800: var(--slate-100);
+  --surface-900: var(--slate-50); // Brightest white for text
+
+  // Surface Semantic Mappings
+  --surface-ground: var(--surface-0); // Extremely dark background
+  --surface-section: var(--surface-50);
+  --surface-card: var(--surface-50);
+  --surface-overlay: var(--surface-50);
+  --surface-border: var(--surface-200);
+  --surface-hover: var(--surface-100);
+
+  // Text Semantic Mappings
+  --text-color: var(--surface-900);
+  --text-color-secondary: var(--surface-500);
+  --text-color-disabled: var(--surface-400);
+
+  // Primary color adjustments for dark mode if required
+  --primary-color: var(--blue-400); // Slightly lighter blue for dark mode visibility
+  --primary-color-text: var(--surface-0);
+
+  // App Custom Specific Theme Variables Mapped to New Surfaces
+  --bg-color: var(--surface-ground);
+  --text-main: var(--text-color);
+  --text-muted: var(--text-color-secondary);
+  --border-color: var(--surface-border);
+  --card-bg: var(--surface-card);
+  --img-bg: var(--surface-100);
+}
