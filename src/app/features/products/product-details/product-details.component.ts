@@ -285,7 +285,7 @@ export class ProductDetailsComponent implements OnInit {
   private recentService = inject(RecentlyViewedService);
   private router = inject(Router);
 
-  product$!: Observable<Product | undefined>;
+  product$!: Observable<Product>;
   relatedProducts$!: Observable<Product[]>;
   
   private activeImageSubject = new BehaviorSubject<string>('');

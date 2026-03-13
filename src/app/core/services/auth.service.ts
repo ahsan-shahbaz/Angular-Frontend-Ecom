@@ -1,17 +1,23 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { ToastService } from './toast.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private toastService = inject(ToastService);
+  private apiUrl = environment.apiUrl;
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private toastService: ToastService) {
+  constructor() {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       this.currentUserSubject.next(JSON.parse(savedUser));
@@ -19,26 +25,29 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<User> {
-    // Mock user authentication
-    const mockUser: User = {
-      id: 1,
-      email,
-      firstName: 'John',
-      lastName: 'Doe',
-      token: 'mock-jwt-token-12345'
-    };
+    return this.http.post<User>(`${this.apiUrl}/auth/login`, { email, password }).pipe(
+      tap(user => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        this.toastService.success('Successfully logged in');
+      }),
+      catchError(err => {
+        this.toastService.error(err.error?.message || 'Invalid credentials');
+        throw err;
+      })
+    );
+  }
 
-    return of(mockUser).pipe(
-      delay(800),
-      map(user => {
-        if (email === 'test@test.com' && password === 'password') {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.toastService.success('Successfully logged in');
-          return user;
-        }
-        this.toastService.error('Invalid credentials');
-        throw new Error('Invalid credentials');
+  register(email: string, password: string, firstName: string, lastName: string): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/register`, { email, password, firstName, lastName }).pipe(
+      tap(user => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        this.toastService.success('Account created successfully');
+      }),
+      catchError(err => {
+        this.toastService.error(err.error?.message || 'Registration failed');
+        throw err;
       })
     );
   }

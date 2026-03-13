@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api', // Mock DEV URL
+  apiUrl: 'http://localhost:8080/api', // Spring Boot Backend
   featureFlags: {
     enableWishlist: false,
     newCheckoutFlow: true
