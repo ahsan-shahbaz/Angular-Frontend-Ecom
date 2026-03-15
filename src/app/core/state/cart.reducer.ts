@@ -23,31 +23,37 @@ export const cartReducer = createReducer(
     totalQuantity,
     totalPrice
   })),
-  on(CartActions.addToCart, (state, { product, quantity }) => {
-    const existingItem = state.items.find(item => item.product.id === product.id);
+  on(CartActions.addToCart, (state, { product, quantity, variant }) => {
+    const existingItem = state.items.find(item => 
+      item.product.id === product.id && item.selectedVariant === variant
+    );
     let updatedItems;
 
     if (existingItem) {
       updatedItems = state.items.map(item =>
-        item.product.id === product.id
+        item.product.id === product.id && item.selectedVariant === variant
           ? { ...item, quantity: item.quantity + quantity }
           : item
       );
     } else {
-      updatedItems = [...state.items, { product, quantity }];
+      updatedItems = [...state.items, { product, quantity, selectedVariant: variant }];
     }
 
     const totals = calculateTotals(updatedItems);
     return { ...state, items: updatedItems, ...totals };
   }),
-  on(CartActions.removeFromCart, (state, { productId }) => {
-    const updatedItems = state.items.filter(item => item.product.id !== productId);
+  on(CartActions.removeFromCart, (state, { productId, variant }) => {
+    const updatedItems = state.items.filter(item => 
+      !(item.product.id === productId && item.selectedVariant === variant)
+    );
     const totals = calculateTotals(updatedItems);
     return { ...state, items: updatedItems, ...totals };
   }),
-  on(CartActions.updateQuantity, (state, { productId, quantity }) => {
+  on(CartActions.updateQuantity, (state, { productId, variant, quantity }) => {
     const updatedItems = state.items.map(item =>
-      item.product.id === productId ? { ...item, quantity } : item
+      (item.product.id === productId && item.selectedVariant === variant) 
+        ? { ...item, quantity } 
+        : item
     );
     const totals = calculateTotals(updatedItems);
     return { ...state, items: updatedItems, ...totals };

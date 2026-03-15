@@ -22,16 +22,17 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
                 
                 <div class="item-details">
                   <h4 [routerLink]="['/products', item.product.id]" class="item-title">{{ item.product.title }}</h4>
+                  <p class="item-variant" *ngIf="item.selectedVariant">Variant: <span>{{ item.selectedVariant }}</span></p>
                   <p class="item-price">\${{ item.product.price | number:'1.2-2' }}</p>
                 </div>
 
                 <div class="item-actions">
                   <div class="quantity-control">
-                    <button class="qty-btn" (click)="updateQty(item.product.id, item.quantity - 1)">-</button>
+                    <button class="qty-btn" (click)="updateQty(item.product.id, item.selectedVariant, item.quantity - 1)">-</button>
                     <span class="qty">{{ item.quantity }}</span>
-                    <button class="qty-btn" (click)="updateQty(item.product.id, item.quantity + 1)">+</button>
+                    <button class="qty-btn" (click)="updateQty(item.product.id, item.selectedVariant, item.quantity + 1)">+</button>
                   </div>
-                  <button class="remove-btn" (click)="removeItem(item.product.id)">🗑️ Remove</button>
+                  <button class="remove-btn" (click)="removeItem(item.product.id, item.selectedVariant)">🗑️ Remove</button>
                 </div>
              </div>
           </div>
@@ -98,6 +99,8 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
     .item-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .item-details { flex: 1; }
     .item-title { cursor: pointer; margin: 0 0 0.5rem 0; color: var(--text-color, #1f2937); }
+    .item-variant { font-size: 0.85rem; color: #6366f1; font-weight: 600; margin-bottom: 0.5rem; }
+    .item-variant span { color: var(--text-color, #4b5563); font-weight: 400; }
     .item-price { font-weight: bold; margin: 0; color: var(--text-color, #374151); }
     
     .item-actions {
@@ -168,15 +171,15 @@ export class CartComponent {
   vm = toSignal(this.cartService.cartState$, { initialValue: { items: [], totalQuantity: 0, totalPrice: 0 } });
 
 
-  updateQty(productId: number, qty: number) {
-    this.cartService.updateQuantity(productId, qty);
+  updateQty(productId: number, variant: string | undefined, qty: number) {
+    this.cartService.updateQuantity(productId, qty, variant);
   }
 
-  removeItem(productId: number) {
-    this.cartService.removeFromCart(productId);
+  removeItem(productId: number, variant: string | undefined) {
+    this.cartService.removeFromCart(productId, variant);
   }
 
-  trackByProductId(index: number, item: any): number {
-    return item.product.id;
+  trackByProductId(index: number, item: any): string {
+    return `${item.product.id}-${item.selectedVariant || ''}`;
   }
 }
