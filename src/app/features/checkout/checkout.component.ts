@@ -7,6 +7,7 @@ import { CartService } from '../../core/services/cart.service';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { InputComponent } from '../../shared/ui/input/input.component';
 import { ToastService } from '../../core/services/toast.service';
+import { OrderService } from '../../core/services/order.service';
 
 @Component({
   selector: 'app-checkout',
@@ -151,6 +152,7 @@ export class CheckoutComponent implements OnInit {
   private cartService = inject(CartService);
   private toastService = inject(ToastService);
   private router = inject(Router);
+  private orderService = inject(OrderService);
 
   checkoutForm!: FormGroup;
   isSubmitting = false;
@@ -181,11 +183,18 @@ export class CheckoutComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    // Simulate API submission
-    setTimeout(() => {
-      this.toastService.success('Order placed successfully!');
-      this.cartService.clearCart();
-      this.router.navigate(['/']);
-    }, 1500);
+    this.orderService.placeOrder(this.checkoutForm.value).subscribe({
+      next: (order) => {
+        this.toastService.success('Order placed successfully!');
+        this.cartService.clearCart();
+        this.router.navigate(['/']);
+        this.isSubmitting = false;
+      },
+      error: (err) => {
+        this.toastService.error('Failed to place order. Please try again.');
+        this.isSubmitting = false;
+        console.error('Order error:', err);
+      }
+    });
   }
 }
