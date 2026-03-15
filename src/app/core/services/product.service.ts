@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { shareReplay, catchError } from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
 import { Product } from '../models/product.model';
+import { ProductFilters } from '../models/product-filters.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,17 +14,25 @@ export class ProductService {
   private apiUrl = environment.apiUrl;
 
   // RxJS ShareReplay Cache
-  private productsCache$?: Observable<Product[]>;
+  private productsCache = new Map<string, Observable<Product[]>>();
   private categoriesCache$?: Observable<string[]>;
   private productCache = new Map<number, Observable<Product>>();
 
-  getProducts(): Observable<Product[]> {
-    if (!this.productsCache$) {
-      this.productsCache$ = this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-        shareReplay(1)
-      );
+  getProducts(filters?: ProductFilters): Observable<Product[]> {
+    const params = this.buildFilterParams(filters);
+    const cacheKey = params.toString() || 'all';
+    const cached = this.productsCache.get(cacheKey);
+
+    if (cached) {
+      return cached;
     }
-    return this.productsCache$;
+
+    const request$ = this.http.get<Product[]>(`${this.apiUrl}/products`, { params }).pipe(
+      shareReplay(1)
+    );
+
+    this.productsCache.set(cacheKey, request$);
+    return request$;
   }
 
   getProduct(id: number): Observable<Product> {
@@ -58,5 +67,34 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}/products/search`, {
       params: { q: query }
     });
+  }
+
+  private buildFilterParams(filters?: ProductFilters): HttpParams {
+    let params = new HttpParams();
+
+    if (!filters) {
+      return params;
+    }
+
+    if (filters.priceMin != null) {
+      params = params.set('priceMin', filters.priceMin.toString());
+    }
+    if (filters.priceMax != null) {
+      params = params.set('priceMax', filters.priceMax.toString());
+    }
+    if (filters.category) {
+      params = params.set('category', filters.category);
+    }
+    if (filters.brand) {
+      params = params.set('brand', filters.brand);
+    }
+    if (filters.rating != null) {
+      params = params.set('rating', filters.rating.toString());
+    }
+    if (filters.inStockOnly) {
+      params = params.set('inStock', 'true');
+    }
+
+    return params;
   }
 }
