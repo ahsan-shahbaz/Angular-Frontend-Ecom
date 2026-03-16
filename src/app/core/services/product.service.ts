@@ -17,6 +17,7 @@ export class ProductService {
   private productsCache = new Map<string, Observable<Product[]>>();
   private categoriesCache$?: Observable<string[]>;
   private productCache = new Map<number, Observable<Product>>();
+  private searchCache = new Map<string, Observable<Product[]>>();
 
   getProducts(filters?: ProductFilters): Observable<Product[]> {
     const params = this.buildFilterParams(filters);
@@ -42,11 +43,25 @@ export class ProductService {
     }
 
     const request$ = this.http.get<Product>(`${this.apiUrl}/products/${id}`).pipe(
-      // Cache the latest product response to prevent duplicate network calls
       shareReplay(1)
     );
 
     this.productCache.set(id, request$);
+    return request$;
+  }
+
+  searchProducts(query: string): Observable<Product[]> {
+    const key = query.trim().toLowerCase();
+    const cached = this.searchCache.get(key);
+    if (cached) {
+      return cached;
+    }
+
+    const request$ = this.http.get<Product[]>(`${this.apiUrl}/products/search`, {
+      params: { q: query }
+    }).pipe(shareReplay(1));
+
+    this.searchCache.set(key, request$);
     return request$;
   }
 
@@ -61,12 +76,6 @@ export class ProductService {
 
   getFeaturedProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products/featured`);
-  }
-
-  searchProducts(query: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products/search`, {
-      params: { q: query }
-    });
   }
 
   private buildFilterParams(filters?: ProductFilters): HttpParams {

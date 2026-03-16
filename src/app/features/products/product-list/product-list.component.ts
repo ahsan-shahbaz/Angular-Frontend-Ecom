@@ -1,14 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, take, takeUntil } from 'rxjs/operators';
 import { Product } from '../../../core/models/product.model';
 import { ProductFilters } from '../../../core/models/product-filters.model';
 import { selectAllProducts, selectProductError, selectProductFilters, selectProductLoading } from '../../../core/state/product.selectors';
-import { loadProducts, resetFilters, updateFilters } from '../../../core/state/product.actions';
+import { loadProducts, resetFilters, searchProducts, updateFilters } from '../../../core/state/product.actions';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 import { ProductService } from '../../../core/services/product.service';
@@ -22,12 +22,16 @@ import { ProductService } from '../../../core/services/product.service';
 
       <!-- Hero Header -->
       <header class="hero">
-        <h1>Our Collection</h1>
-        <p>Discover premium products curated just for you.</p>
+        <h1 *ngIf="!searchQuery">Our Collection</h1>
+        <h1 *ngIf="searchQuery">Search Results</h1>
+        <p *ngIf="!searchQuery">Discover premium products curated just for you.</p>
+        <p *ngIf="searchQuery">
+          Showing results for "<strong>{{ searchQuery }}</strong>"
+        </p>
       </header>
 
-      <!-- Filter Toolbar -->
-      <section class="toolbar" *ngIf="filterModel as f">
+      <!-- Filter Toolbar (hidden during search) -->
+      <section class="toolbar" *ngIf="!searchQuery && filterModel as f">
         <div class="filters-row">
 
           <!-- Price -->
@@ -109,9 +113,11 @@ import { ProductService } from '../../../core/services/product.service';
       <div class="state-msg" *ngIf="!(loading$ | async) && (products$ | async)?.length === 0">
         <div class="state-card">
           <span class="state-icon">🔍</span>
-          <h3>No products found</h3>
-          <p>Try adjusting your filters.</p>
-          <button class="btn-apply" (click)="clearFilters()">Clear Filters</button>
+          <h3 *ngIf="searchQuery">No products found for "{{ searchQuery }}"</h3>
+          <h3 *ngIf="!searchQuery">No products found</h3>
+          <p *ngIf="searchQuery">Try adjusting your search or browse our full collection.</p>
+          <p *ngIf="!searchQuery">Try adjusting your filters.</p>
+          <button class="btn-apply" *ngIf="!searchQuery" (click)="clearFilters()">Clear Filters</button>
         </div>
       </div>
     </div>
@@ -140,6 +146,9 @@ import { ProductService } from '../../../core/services/product.service';
       color: var(--text-muted);
       font-size: 1.05rem;
       margin: 0;
+    }
+    .hero p strong {
+      color: var(--text-main);
     }
 
     /* ─── Toolbar ─── */
@@ -338,11 +347,12 @@ import { ProductService } from '../../../core/services/product.service';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  private destroy$ = new Subject<void>();
 
   products$: Observable<Product[]> = this.store.select(selectAllProducts);
   loading$: Observable<boolean> = this.store.select(selectProductLoading);
@@ -365,18 +375,43 @@ export class ProductListComponent implements OnInit {
 
   ratingOptions = [5, 4, 3, 2, 1];
 
+  searchQuery: string | null = null;
+
   ngOnInit() {
-    this.filters$.pipe(take(1)).subscribe((filters) => {
-      const queryFilters = this.parseFiltersFromQuery();
-      const normalized = this.normalizeFilters({ ...filters, ...queryFilters });
-      this.filterModel = { ...normalized };
-      this.store.dispatch(updateFilters({ filters: normalized }));
-      this.syncQueryParams(normalized);
+    // Subscribe to query param changes for search
+    this.route.queryParams.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(params => {
+      const query = params['search']?.trim();
+      this.searchQuery = query || null;
+
+      if (query) {
+        // Search mode: dispatch search action
+        this.store.dispatch(searchProducts({ query }));
+      } else {
+        // Browse mode: initialize filters from query params and load
+        this.filters$.pipe(take(1)).subscribe((filters) => {
+          const queryFilters = this.parseFiltersFromQuery();
+          const normalized = this.normalizeFilters({ ...filters, ...queryFilters });
+          this.filterModel = { ...normalized };
+          this.store.dispatch(updateFilters({ filters: normalized }));
+          this.syncQueryParams(normalized);
+        });
+      }
     });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   retry() {
-    this.store.dispatch(loadProducts());
+    if (this.searchQuery) {
+      this.store.dispatch(searchProducts({ query: this.searchQuery }));
+    } else {
+      this.store.dispatch(loadProducts());
+    }
   }
 
   updateNumericFilter(key: 'priceMin' | 'priceMax' | 'rating', value: any) {
