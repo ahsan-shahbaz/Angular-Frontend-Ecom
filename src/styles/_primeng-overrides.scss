@@ -1,58 +1,444 @@
-// Overrides physical CSS rules for PrimeNG components to enforce our premium token design
+// ============================================================================
+// PRIMENG COMPONENT OVERRIDES - Premium styling
+// ============================================================================
 
+// ============================================================================
+// BUTTONS - Modern, elevated design with gradient support
+// ============================================================================
 .p-button {
-  border-radius: var(--border-radius);
-  font-weight: var(--font-weight-semibold);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-xl);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  transition: all var(--duration-base) var(--ease-spring);
+  padding: var(--space-3) var(--space-5);
+  text-transform: uppercase;
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  // Ripple effect base
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &:active {
     transform: translateY(0);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  // Primary button with gradient
+  &.p-button-primary {
+    background: var(--button-primary-bg);
+    color: var(--primary-color-text);
+    box-shadow: var(--button-primary-shadow);
+
+    &:hover {
+      background: var(--button-primary-hover);
+      box-shadow: var(--button-primary-shadow-hover);
+    }
+  }
+
+  // Secondary/Outlined button
+  &.p-button-secondary,
+  &.p-button-outlined {
+    background: transparent;
+    border: 2px solid var(--surface-border);
+    color: var(--text-main);
+
+    &:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary-300);
+    }
+  }
+
+  // Sizes
+  &.p-button-sm {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+
+  &.p-button-lg {
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--text-base);
   }
 }
 
+// ============================================================================
+// INPUTS - Clean, modern inputs with enhanced focus states
+// ============================================================================
 .p-inputtext {
-  border-radius: 8px;
-  padding: 0.75rem;
-  background: var(--surface-section);
-  color: var(--text-color);
-  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--input-bg);
+  color: var(--text-main);
+  border: 2px solid var(--input-border);
   font-family: var(--font-family);
+  font-size: var(--text-base);
+  transition: all var(--duration-base) var(--ease-out);
+
+  &::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
 
   &:enabled:hover {
-    border-color: var(--primary-400);
+    border-color: var(--primary-300);
+    background: var(--input-bg-focus);
   }
 
   &:enabled:focus {
-    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2); // Blue 500 w/ opacity
-    border-color: var(--primary-500);
+    background: var(--input-bg-focus);
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-shadow-focus);
+    outline: none;
+  }
+
+  &.ng-invalid.ng-dirty {
+    border-color: var(--error-500);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
   }
 }
 
-.p-card {
-  background: var(--surface-card);
-  border: 1px solid var(--surface-border);
-  border-radius: 16px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+// Input groups
+.p-inputgroup {
+  .p-inputgroup-addon {
+    background: var(--surface-hover);
+    border: 2px solid var(--input-border);
+    border-right: none;
+    color: var(--text-muted);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  }
+
+  .p-inputtext {
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
 }
 
+// ============================================================================
+// CARDS - Premium cards with depth and hover effects
+// ============================================================================
+.p-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-slow) var(--ease-spring);
+
+  &:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    border-color: var(--primary-200);
+  }
+
+  .p-card-header {
+    padding: var(--space-6) var(--space-6) var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+
+    h2, h3 {
+      margin: 0;
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      color: var(--text-main);
+    }
+  }
+
+  .p-card-body {
+    padding: var(--space-6);
+  }
+
+  .p-card-footer {
+    padding: var(--space-4) var(--space-6) var(--space-6);
+    border-top: 1px solid var(--border-color);
+  }
+}
+
+// ============================================================================
+// DIALOGS - Modern modal design
+// ============================================================================
 .p-dialog {
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-2xl);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+
   .p-dialog-header {
-    background: var(--surface-card);
-    border-bottom: 1px solid var(--surface-border);
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-5) var(--space-6);
+
+    .p-dialog-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      color: var(--text-main);
+    }
+
+    .p-dialog-header-icon {
+      color: var(--text-muted);
+      border-radius: var(--radius-lg);
+      transition: all var(--duration-fast) var(--ease-out);
+
+      &:hover {
+        background: var(--surface-hover);
+        color: var(--text-main);
+      }
+    }
   }
 
   .p-dialog-content {
-    background: var(--surface-card);
+    background: var(--card-bg);
+    padding: var(--space-6);
   }
 
   .p-dialog-footer {
-    border-top: 1px solid var(--surface-border);
-    background: var(--surface-card);
+    border-top: 1px solid var(--border-color);
+    background: var(--card-bg);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+}
+
+// Backdrop
+.p-dialog-mask {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+// ============================================================================
+// DROPDOWNS - Modern select styling
+// ============================================================================
+.p-dropdown {
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--input-border);
+  background: var(--input-bg);
+  transition: all var(--duration-base) var(--ease-out);
+
+  &:not(.p-disabled):hover {
+    border-color: var(--primary-300);
+  }
+
+  &.p-focus {
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-shadow-focus);
+  }
+
+  .p-dropdown-label {
+    padding: var(--space-3) var(--space-4);
+    color: var(--text-main);
+  }
+
+  .p-dropdown-trigger {
+    color: var(--text-muted);
+    width: auto;
+    padding: 0 var(--space-4);
+  }
+}
+
+.p-dropdown-panel {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-xl);
+  background: var(--card-bg);
+
+  .p-dropdown-items {
+    padding: var(--space-2);
+
+    .p-dropdown-item {
+      border-radius: var(--radius-lg);
+      padding: var(--space-3) var(--space-4);
+      margin: var(--space-1) 0;
+      color: var(--text-main);
+      transition: all var(--duration-fast) var(--ease-out);
+
+      &:hover {
+        background: var(--surface-hover);
+      }
+
+      &.p-highlight {
+        background: var(--primary-100);
+        color: var(--primary-700);
+      }
+    }
+  }
+}
+
+// ============================================================================
+// CHECKBOX & RADIO - Modern toggle styling
+// ============================================================================
+.p-checkbox,
+.p-radiobutton {
+  width: 22px;
+  height: 22px;
+
+  .p-checkbox-box,
+  .p-radiobutton-box {
+    border: 2px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    transition: all var(--duration-fast) var(--ease-out);
+
+    &.p-highlight {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    &:not(.p-disabled):hover {
+      border-color: var(--primary-300);
+    }
+  }
+}
+
+.p-radiobutton .p-radiobutton-box {
+  border-radius: var(--radius-full);
+}
+
+// ============================================================================
+// TOAST - Modern notifications
+// ============================================================================
+.p-toast {
+  .p-toast-message {
+    border-radius: var(--radius-xl);
+    border: 1px solid;
+    box-shadow: var(--shadow-lg);
+
+    &.p-toast-message-success {
+      background: var(--success-50);
+      border-color: var(--success-500);
+      color: var(--success-700);
+    }
+
+    &.p-toast-message-info {
+      background: var(--info-50);
+      border-color: var(--info-500);
+      color: var(--info-700);
+    }
+
+    &.p-toast-message-warn {
+      background: var(--warning-50);
+      border-color: var(--warning-500);
+      color: var(--warning-700);
+    }
+
+    &.p-toast-message-error {
+      background: var(--error-50);
+      border-color: var(--error-500);
+      color: var(--error-700);
+    }
+  }
+}
+
+// ============================================================================
+// TOOLTIPS - Subtle help text
+// ============================================================================
+.p-tooltip {
+  .p-tooltip-text {
+    background: var(--surface-800);
+    color: var(--surface-0);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// ============================================================================
+// PAGINATION - Modern page controls
+// ============================================================================
+.p-paginator {
+  background: transparent;
+  padding: var(--space-4) 0;
+
+  .p-paginator-current {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .p-paginator-page {
+    min-width: 40px;
+    height: 40px;
+    border-radius: var(--radius-lg);
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    font-weight: var(--font-medium);
+    transition: all var(--duration-fast) var(--ease-out);
+
+    &:hover {
+      background: var(--surface-hover);
+    }
+
+    &.p-highlight {
+      background: var(--primary-color);
+      color: var(--primary-color-text);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-first,
+  .p-paginator-last {
+    border-radius: var(--radius-lg);
+    border: none;
+    color: var(--text-main);
+    transition: all var(--duration-fast) var(--ease-out);
+
+    &:hover {
+      background: var(--surface-hover);
+    }
+
+    &.p-disabled {
+      color: var(--text-disabled);
+    }
+  }
+}
+
+// ============================================================================
+// BADGES - Modern label styling
+// ============================================================================
+.p-badge {
+  font-weight: var(--font-bold);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  min-width: auto;
+  height: auto;
+
+  &.p-badge-success {
+    background: var(--success-500);
+  }
+
+  &.p-badge-info {
+    background: var(--info-500);
+  }
+
+  &.p-badge-warning {
+    background: var(--warning-500);
+  }
+
+  &.p-badge-danger {
+    background: var(--error-500);
   }
 }

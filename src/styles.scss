@@ -1,64 +1,411 @@
-// --- Theme Token Architecture Setup ---
+// ============================================================================
+// GLOBAL STYLES - Premium E-commerce Theme
+// ============================================================================
+
+// Theme token architecture
 @import 'styles/color-palette';
 @import 'styles/typography';
 @import 'styles/themes/light-primeng-override';
 @import 'styles/themes/dark-primeng-override';
 
-// --- PrimeNG Custom Global Overrides ---
+// PrimeNG custom overrides
 @import 'styles/primeng-overrides';
 
-// --- Global Application CSS Reset and Base Config ---
-body {
+// ============================================================================
+// CSS RESET & BASE STYLES
+// ============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
   font-family: var(--font-family);
-  background-color: var(--bg-color);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   color: var(--text-main);
-  transition: background-color 0.4s ease, color 0.4s ease;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  transition: background-color var(--duration-slow) var(--ease-out),
+              color var(--duration-slow) var(--ease-out);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-* {
-  box-sizing: border-box;
-}
+// ============================================================================
+// SCROLLBAR - Custom premium scrollbar
+// ============================================================================
 
-/* Custom premium scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--surface-100);
+  border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 6px;
-  border: 2px solid var(--bg-color);
-  /* fake padding */
+  background: var(--surface-400);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    background: var(--surface-500);
+  }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
-/* Global focus state */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--primary-500);
-  outline-offset: 2px;
+// Firefox
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-400) var(--surface-100);
 }
 
-/* Base link styling */
+// ============================================================================
+// SELECTION - Custom text selection
+// ============================================================================
+
+::selection {
+  background: var(--primary-200);
+  color: var(--primary-900);
+}
+
+// ============================================================================
+// FOCUS STATES - Accessible focus rings
+// ============================================================================
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+// Remove default focus for mouse users
+:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+// ============================================================================
+// LINKS - Enhanced link styling
+// ============================================================================
+
 a {
   color: var(--primary-500);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-600);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &:focus-visible {
+    border-radius: var(--radius-sm);
+  }
 }
 
-a:hover {
-  color: var(--text-main);
+// ============================================================================
+// IMAGES - Responsive images
+// ============================================================================
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// ============================================================================
+// BUTTONS - Base button reset
+// ============================================================================
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// ============================================================================
+// FORMS - Base form elements
+// ============================================================================
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+// ============================================================================
+// UTILITY CLASSES
+// ============================================================================
+
+// Screen reader only
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Container
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+// ============================================================================
+// GLASSMORPHISM UTILITIES
+// ============================================================================
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--glass-shadow);
+}
+
+// ============================================================================
+// ANIMATIONS - Utility animations
+// ============================================================================
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+// Animation utilities
+.animate-fade-in {
+  animation: fadeIn var(--duration-base) var(--ease-out);
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-base) var(--ease-out);
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown var(--duration-base) var(--ease-out);
+}
+
+.animate-slide-in {
+  animation: slideIn var(--duration-base) var(--ease-out);
+}
+
+.animate-pulse {
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s var(--ease-in-out) infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s var(--ease-in-out) infinite;
+}
+
+// Stagger animation delays
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+// ============================================================================
+// GRADIENT TEXT - Gradient text utility
+// ============================================================================
+
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ============================================================================
+// SKELETON LOADING - Shimmer effect
+// ============================================================================
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-200) 25%,
+    var(--surface-300) 50%,
+    var(--surface-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+// ============================================================================
+// BADGES - Modern badge styles
+// ============================================================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+
+  &-hero {
+    background: var(--primary-100);
+    color: var(--primary-700);
+  }
+
+  &-sale {
+    background: var(--badge-sale-bg);
+    color: var(--badge-sale-text);
+  }
+
+  &-new {
+    background: var(--badge-new-bg);
+    color: var(--badge-new-text);
+  }
+
+  &-featured {
+    background: var(--badge-featured-bg);
+    color: var(--badge-featured-text);
+  }
+}
+
+// ============================================================================
+// RESPONSIVE UTILITIES
+// ============================================================================
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
 }

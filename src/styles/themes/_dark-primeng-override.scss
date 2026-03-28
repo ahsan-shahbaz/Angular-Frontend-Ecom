@@ -1,9 +1,30 @@
-// Defines CSS variable overrides mapped to PrimeNG's Lara Theme for Dark Mode
-// Activated automatically when body has .dark-theme
+// ============================================================================
+// DARK THEME - Premium, sophisticated dark mode
+// ============================================================================
 
 body.dark-theme {
-  // PrimeNG Surface Mapping (Dark Mode Inversion)
-  --surface-0: #020617; // Deepest dark
+  // ==========================================================================
+  // PRIME COLOR MAPPING - Brighter indigo for dark mode
+  // ==========================================================================
+  --primary-50: var(--indigo-900);
+  --primary-100: var(--indigo-800);
+  --primary-200: var(--indigo-700);
+  --primary-300: var(--indigo-600);
+  --primary-400: var(--indigo-500);
+  --primary-500: var(--indigo-400);  // Brighter for dark mode
+  --primary-600: var(--indigo-300);
+  --primary-700: var(--indigo-200);
+  --primary-800: var(--indigo-100);
+  --primary-900: var(--indigo-50);
+
+  --primary-color: var(--primary-400);
+  --primary-color-text: var(--slate-950);
+  --primary-color-contrast: var(--primary-500);
+
+  // ==========================================================================
+  // SURFACE COLORS - Inverted dark slate
+  // ==========================================================================
+  --surface-0: var(--slate-950);        // Deepest background
   --surface-50: var(--slate-900);
   --surface-100: var(--slate-800);
   --surface-200: var(--slate-700);
@@ -13,35 +34,105 @@ body.dark-theme {
   --surface-600: var(--slate-300);
   --surface-700: var(--slate-200);
   --surface-800: var(--slate-100);
-  --surface-900: var(--slate-50); // Brightest white for text
+  --surface-900: var(--slate-50);
 
-  // Surface Semantic Mappings
-  --surface-ground: var(--surface-0); // Extremely dark background
+  // Semantic surface mappings
+  --surface-ground: var(--surface-0);
   --surface-section: var(--surface-50);
   --surface-card: var(--surface-50);
-  --surface-overlay: var(--surface-50);
+  --surface-overlay: var(--surface-100);
   --surface-border: var(--surface-200);
+  --surface-border-hover: var(--surface-300);
   --surface-hover: var(--surface-100);
+  --surface-active: var(--surface-200);
 
-  // Text Semantic Mappings
-  --text-color: var(--surface-900);
-  --text-color-secondary: var(--surface-500);
-  --text-color-disabled: var(--surface-400);
+  // ==========================================================================
+  // TEXT COLORS - High contrast light text
+  // ==========================================================================
+  --text-color: var(--slate-50);
+  --text-color-secondary: var(--slate-400);
+  --text-color-tertiary: var(--slate-500);
+  --text-color-disabled: var(--slate-600);
+  --text-color-inverse: var(--slate-900);
 
-  // Primary color adjustments for dark mode if required
-  --primary-color: var(--blue-400); // Slightly lighter blue for dark mode visibility
-  --primary-color-text: var(--surface-0);
+  // ==========================================================================
+  // ACCENT COLORS - Brighter coral for dark mode
+  // ==========================================================================
+  --accent-500: var(--coral-400);  // Slightly brighter
+  --accent-600: var(--coral-300);
+  --accent-color: var(--coral-400);
+  --accent-color-subtle: var(--coral-900);
 
-  // App Custom Specific Theme Variables Mapped to New Surfaces
+  // ==========================================================================
+  // APP CUSTOM THEME VARIABLES
+  // ==========================================================================
   --bg-color: var(--surface-ground);
+  --bg-color-elevated: var(--surface-card);
   --text-main: var(--text-color);
   --text-muted: var(--text-color-secondary);
+  --text-subtle: var(--text-color-tertiary);
   --border-color: var(--surface-border);
+  --border-color-subtle: var(--surface-100);
   --card-bg: var(--surface-card);
+  --card-bg-elevated: var(--surface-section);
   --img-bg: var(--surface-100);
 
-  // Glassmorphism (Dark Mode)
-  --glass-bg: rgba(15, 23, 42, 0.7);
+  // ==========================================================================
+  // GLASSMORPHISM - Dark mode frosted glass
+  // ==========================================================================
+  --glass-bg: rgba(15, 23, 42, 0.8);
+  --glass-bg-hover: rgba(15, 23, 42, 0.95);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --glass-border-subtle: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --glass-shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  // ==========================================================================
+  // HEADER SPECIFIC
+  // ==========================================================================
+  --header-bg: var(--glass-bg);
+  --header-bg-scrolled: rgba(15, 23, 42, 0.98);
+  --header-border: var(--glass-border);
+  --header-shadow: var(--glass-shadow);
+  --header-backdrop: blur(20px) saturate(180%);
+
+  // ==========================================================================
+  // BUTTON SPECIFIC - Adjusted for dark mode
+  // ==========================================================================
+  --button-primary-bg: var(--gradient-primary);
+  --button-primary-hover: linear-gradient(135deg, var(--indigo-400) 0%, var(--indigo-500) 100%);
+  --button-primary-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.25);
+  --button-primary-shadow-hover: 0 6px 20px rgba(99, 102, 241, 0.35);
+  --button-accent-bg: linear-gradient(135deg, var(--coral-400) 0%, var(--coral-500) 100%);
+  --button-accent-shadow: 0 4px 14px 0 rgba(244, 63, 94, 0.25);
+
+  // ==========================================================================
+  // BADGE/SALE COLORS
+  // ==========================================================================
+  --badge-sale-bg: linear-gradient(135deg, var(--coral-400) 0%, var(--coral-500) 100%);
+  --badge-sale-text: var(--slate-950);
+  --badge-new-bg: var(--teal-400);
+  --badge-new-text: var(--slate-950);
+  --badge-featured-bg: var(--indigo-400);
+  --badge-featured-text: var(--slate-950);
+
+  // ==========================================================================
+  // INPUT SPECIFIC
+  // ==========================================================================
+  --input-bg: var(--surface-100);
+  --input-bg-focus: var(--surface-50);
+  --input-border: var(--surface-200);
+  --input-border-focus: var(--primary-400);
+  --input-shadow-focus: 0 0 0 4px rgba(129, 140, 248, 0.2);
+
+  // ==========================================================================
+  // FOCUS RING
+  // ==========================================================================
+  --focus-ring-color: var(--primary-400);
+  --focus-ring: 0 0 0 var(--focus-ring-width) rgba(129, 140, 248, 0.25);
+
+  // ==========================================================================
+  // SCROLLBAR - Dark mode
+  // ==========================================================================
+  scrollbar-color: var(--surface-600) var(--surface-100);
 }

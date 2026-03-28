@@ -1,20 +1,54 @@
-// Color Palette Tokens
-// Provides the raw color palette for both semantic matching and theming
+// ============================================================================
+// PREMIUM COLOR PALETTE SYSTEM
+// Modern, vibrant colors with rich gradients and depth
+// ============================================================================
 
 :root {
-  // Brand Primary (Blue Accent - Premium Tech Vibe)
-  --blue-50: #eff6ff;
-  --blue-100: #dbeafe;
-  --blue-200: #bfdbfe;
-  --blue-300: #93c5fd;
-  --blue-400: #60a5fa;
-  --blue-500: #3b82f6; // Base Primary
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
-  --blue-800: #1e40af;
-  --blue-900: #1e3a8a;
+  // ==========================================================================
+  // PRIMARY BRAND COLORS - Vibrant Indigo/Violet
+  // ==========================================================================
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1;  // Base Primary
+  --indigo-600: #4f46e5;
+  --indigo-700: #4338ca;
+  --indigo-800: #3730a3;
+  --indigo-900: #312e81;
 
-  // Slate Neutral (Surface & Text)
+  // ==========================================================================
+  // ACCENT COLORS - Coral/Orange for CTAs and highlights
+  // ==========================================================================
+  --coral-50: #fff1f2;
+  --coral-100: #ffe4e6;
+  --coral-200: #fecdd3;
+  --coral-300: #fda4af;
+  --coral-400: #fb7185;
+  --coral-500: #f43f5e;  // Accent color
+  --coral-600: #e11d48;
+  --coral-700: #be123c;
+  --coral-800: #9f1239;
+  --coral-900: #881337;
+
+  // ==========================================================================
+  // SECONDARY ACCENT - Teal/Cyan for variety
+  // ==========================================================================
+  --teal-50: #f0fdfa;
+  --teal-100: #ccfbf1;
+  --teal-200: #99f6e4;
+  --teal-300: #5eead4;
+  --teal-400: #2dd4bf;
+  --teal-500: #14b8a6;
+  --teal-600: #0d9488;
+  --teal-700: #0f766e;
+  --teal-800: #115e59;
+  --teal-900: #134e4a;
+
+  // ==========================================================================
+  // NEUTRAL SCALE - Warm Slate for sophistication
+  // ==========================================================================
   --slate-50: #f8fafc;
   --slate-100: #f1f5f9;
   --slate-200: #e2e8f0;
@@ -24,15 +58,87 @@
   --slate-600: #475569;
   --slate-700: #334155;
   --slate-800: #1e293b;
-  --slate-900: #0f172a; // Deep background for dark mode
+  --slate-900: #0f172a;
+  --slate-950: #020617;
 
-  // Semantic Errors/Success
-  --red-500: #ef4444;
-  --green-500: #10b981;
-  --yellow-500: #f59e0b;
+  // ==========================================================================
+  // SEMANTIC COLORS
+  // ==========================================================================
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
 
-  // Modern UI Tokens
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+
+  --error-50: #fef2f2;
+  --error-100: #fee2e2;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+  --error-700: #b91c1c;
+
+  --info-50: #eff6ff;
+  --info-100: #dbeafe;
+  --info-500: #3b82f6;
+  --info-600: #2563eb;
+  --info-700: #1d4ed8;
+
+  // ==========================================================================
+  // GRADIENT DEFINITIONS
+  // ==========================================================================
+  --gradient-primary: linear-gradient(135deg, var(--indigo-500) 0%, var(--indigo-600) 100%);
+  --gradient-primary-hover: linear-gradient(135deg, var(--indigo-600) 0%, var(--indigo-700) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--indigo-600) 0%, var(--coral-500) 50%, var(--indigo-500) 100%);
+  --gradient-mesh-1: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(244, 63, 94, 0.1) 100%);
+  --gradient-mesh-2: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+
+  // ==========================================================================
+  // SHADOW SYSTEM - Depth and elevation
+  // ==========================================================================
+  --shadow-color: 220 3% 15%;
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-glow: 0 0 40px -10px var(--indigo-400);
+  --shadow-glow-accent: 0 0 40px -10px var(--coral-400);
+
+  // ==========================================================================
+  // TRANSITION CURVES - Smooth, premium animations
+  // ==========================================================================
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
+
+  // ==========================================================================
+  // Z-INDEX SCALE
+  // ==========================================================================
+  --z-negative: -1;
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+  --z-max: 9999;
 }
