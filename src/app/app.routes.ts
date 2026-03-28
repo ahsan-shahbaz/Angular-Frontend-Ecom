@@ -32,6 +32,40 @@ export const routes: Routes = [
       {
         path: 'wishlist',
         loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./features/user/profile/profile.component').then(m => m.UserProfileComponent),
+        canActivate: [authGuard]
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./features/user/orders/order-history.component').then(m => m.OrderHistoryComponent),
+        canActivate: [authGuard]
+      }
+    ]
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./features/admin/admin-layout.component').then(m => m.AdminLayoutComponent),
+    canActivate: [authGuard, (import('./core/guards/admin.guard')).then(m => m.adminGuard)],
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/admin/dashboard/dashboard.component').then(m => m.AdminDashboardComponent)
+      },
+      {
+        path: 'products',
+        loadComponent: () => import('./features/admin/products/product-management.component').then(m => m.ProductManagementComponent)
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./features/admin/orders/admin-order-list.component').then(m => m.AdminOrderListComponent)
       }
     ]
   },
