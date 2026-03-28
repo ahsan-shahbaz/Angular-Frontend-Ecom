@@ -17,6 +17,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
+  get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
+
   constructor() {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
@@ -64,5 +68,13 @@ export class AuthService {
 
   getToken(): string | null {
     return this.currentUserSubject.value?.token || null;
+  }
+
+  getRole(): string | null {
+    return this.currentUserSubject.value?.role || null;
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
   }
 }
