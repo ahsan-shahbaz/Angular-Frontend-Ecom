@@ -1,23 +1,29 @@
-// Defines CSS variable overrides mapped to PrimeNG's Lara Theme for Light Mode
-// This implements a robust token-based theme.
+// ============================================================================
+// LIGHT THEME - Premium, clean, modern
+// ============================================================================
 
 :root {
-  // PrimeNG Primary Color Mapping
-  --primary-50: var(--blue-50);
-  --primary-100: var(--blue-100);
-  --primary-200: var(--blue-200);
-  --primary-300: var(--blue-300);
-  --primary-400: var(--blue-400);
-  --primary-500: var(--blue-500); // Main brand color
-  --primary-600: var(--blue-600);
-  --primary-700: var(--blue-700);
-  --primary-800: var(--blue-800);
-  --primary-900: var(--blue-900);
+  // ==========================================================================
+  // PRIME COLOR MAPPING - Indigo brand
+  // ==========================================================================
+  --primary-50: var(--indigo-50);
+  --primary-100: var(--indigo-100);
+  --primary-200: var(--indigo-200);
+  --primary-300: var(--indigo-300);
+  --primary-400: var(--indigo-400);
+  --primary-500: var(--indigo-500);
+  --primary-600: var(--indigo-600);
+  --primary-700: var(--indigo-700);
+  --primary-800: var(--indigo-800);
+  --primary-900: var(--indigo-900);
 
   --primary-color: var(--primary-500);
   --primary-color-text: #ffffff;
+  --primary-color-contrast: var(--primary-600);
 
-  // PrimeNG Surface Mapping (Light Mode)
+  // ==========================================================================
+  // SURFACE COLORS - Clean slate backgrounds
+  // ==========================================================================
   --surface-0: #ffffff;
   --surface-50: var(--slate-50);
   --surface-100: var(--slate-100);
@@ -30,32 +36,118 @@
   --surface-800: var(--slate-800);
   --surface-900: var(--slate-900);
 
-  // Surface Semantic Mappings
-  --surface-ground: var(--surface-50); // Background for main app
-  --surface-section: var(--surface-0); // Component wrapper background
-  --surface-card: var(--surface-0); // Card backgrounds
-  --surface-overlay: var(--surface-0); // Dropdowns, Dialogs
-  --surface-border: var(--surface-200); // Default Border
-  --surface-hover: var(--surface-100); // Hover states
+  // Semantic surface mappings
+  --surface-ground: var(--surface-50);
+  --surface-section: var(--surface-0);
+  --surface-card: var(--surface-0);
+  --surface-overlay: var(--surface-0);
+  --surface-border: var(--surface-200);
+  --surface-border-hover: var(--surface-300);
+  --surface-hover: var(--surface-100);
+  --surface-active: var(--surface-200);
 
-  // Text Semantic Mappings
-  --text-color: var(--surface-900); // Base text
-  --text-color-secondary: var(--surface-600); // Muted / Description text
-  --text-color-disabled: var(--surface-400); // Disabled text
+  // ==========================================================================
+  // TEXT COLORS - High contrast for readability
+  // ==========================================================================
+  --text-color: var(--slate-900);
+  --text-color-secondary: var(--slate-600);
+  --text-color-tertiary: var(--slate-500);
+  --text-color-disabled: var(--slate-400);
+  --text-color-inverse: var(--surface-0);
 
-  // App Custom Specific Theme Variables
+  // ==========================================================================
+  // ACCENT COLORS - Coral for highlights
+  // ==========================================================================
+  --accent-50: var(--coral-50);
+  --accent-100: var(--coral-100);
+  --accent-200: var(--coral-200);
+  --accent-300: var(--coral-300);
+  --accent-400: var(--coral-400);
+  --accent-500: var(--coral-500);
+  --accent-600: var(--coral-600);
+  --accent-700: var(--coral-700);
+  --accent-800: var(--coral-800);
+  --accent-900: var(--coral-900);
+
+  --accent-color: var(--coral-500);
+  --accent-color-subtle: var(--coral-100);
+
+  // ==========================================================================
+  // APP CUSTOM THEME VARIABLES
+  // ==========================================================================
   --bg-color: var(--surface-ground);
+  --bg-color-elevated: var(--surface-card);
   --text-main: var(--text-color);
   --text-muted: var(--text-color-secondary);
+  --text-subtle: var(--text-color-tertiary);
   --border-color: var(--surface-border);
+  --border-color-subtle: var(--surface-100);
   --card-bg: var(--surface-card);
+  --card-bg-elevated: var(--surface-0);
   --img-bg: var(--surface-50);
 
-  // Border radius map
-  --border-radius: 12px;
+  // ==========================================================================
+  // BORDER RADIUS - Modern, rounded corners
+  // ==========================================================================
+  --border-radius: var(--radius-xl);
+  --border-radius-sm: var(--radius-lg);
+  --border-radius-lg: var(--radius-2xl);
+  --border-radius-xl: var(--radius-3xl);
+  --border-radius-full: var(--radius-full);
 
-  // Glassmorphism (Light Mode)
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  // ==========================================================================
+  // GLASSMORPHISM - Subtle frosted glass effect
+  // ==========================================================================
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-border-subtle: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.08);
+  --glass-shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+
+  // ==========================================================================
+  // HEADER SPECIFIC - Sticky glass header
+  // ==========================================================================
+  --header-bg: var(--glass-bg);
+  --header-bg-scrolled: rgba(255, 255, 255, 0.95);
+  --header-border: var(--glass-border);
+  --header-shadow: var(--glass-shadow);
+  --header-backdrop: blur(20px) saturate(180%);
+
+  // ==========================================================================
+  // BUTTON SPECIFIC - Premium button styles
+  // ==========================================================================
+  --button-primary-bg: var(--gradient-primary);
+  --button-primary-hover: var(--gradient-primary-hover);
+  --button-primary-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+  --button-primary-shadow-hover: 0 6px 20px rgba(99, 102, 241, 0.23);
+  --button-accent-bg: var(--gradient-accent);
+  --button-accent-shadow: 0 4px 14px 0 rgba(244, 63, 94, 0.39);
+
+  // ==========================================================================
+  // BADGE/SALE COLORS
+  // ==========================================================================
+  --badge-sale-bg: var(--gradient-accent);
+  --badge-sale-text: #ffffff;
+  --badge-new-bg: var(--teal-500);
+  --badge-new-text: #ffffff;
+  --badge-featured-bg: var(--indigo-500);
+  --badge-featured-text: #ffffff;
+
+  // ==========================================================================
+  // INPUT SPECIFIC
+  // ==========================================================================
+  --input-bg: var(--surface-section);
+  --input-bg-focus: var(--surface-0);
+  --input-border: var(--surface-border);
+  --input-border-focus: var(--primary-400);
+  --input-shadow-focus: 0 0 0 4px rgba(99, 102, 241, 0.15);
+
+  // ==========================================================================
+  // FOCUS RING
+  // ==========================================================================
+  --focus-ring-color: var(--primary-400);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring: 0 0 0 var(--focus-ring-width) rgba(99, 102, 241, 0.3);
 }
