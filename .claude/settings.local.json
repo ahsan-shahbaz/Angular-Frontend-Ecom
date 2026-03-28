@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /e/github-ahsan/ecommerce-shop/Java-SprintBoot-Ecom/src -type f -name *.java)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
