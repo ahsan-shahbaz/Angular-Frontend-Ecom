@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, OnDestroy, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { AuthService } from '../../core/services/auth.service';
+import { AiService } from '../../core/services/ai.service';
 
 @Component({
   selector: 'app-header',
@@ -39,18 +40,24 @@ import { AuthService } from '../../core/services/auth.service';
         <!-- Search Bar -->
         <div class="search-wrapper" [class.expanded]="isSearchFocused">
           <div class="search-box">
+            <button class="ai-toggle-btn" 
+                    [class.active]="isAiSearch" 
+                    (click)="toggleAiSearch()"
+                    title="Toggle AI Smart Search">
+              <i class="fas fa-magic"></i>
+            </button>
             <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input
               type="text"
-              placeholder="Search for products..."
+              [placeholder]="isAiSearch ? 'Ask AI for products...' : 'Search for products...'"
               [(ngModel)]="searchQuery"
               (ngModelChange)="onSearchInput($event)"
               (keydown.enter)="submitSearch()"
               (focus)="isSearchFocused = true"
-              (blur)="isSearchFocused = false"
+              (blur)="onBlur()"
             >
             <button class="search-clear" *ngIf="searchQuery" (click)="clearSearch()">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
@@ -58,6 +65,21 @@ import { AuthService } from '../../core/services/auth.service';
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
+          </div>
+
+          <!-- AI Search Results -->
+          <div class="ai-results-dropdown" *ngIf="isAiSearch && aiResults().length > 0 && isSearchFocused">
+             <div class="ai-results-header">
+               <i class="fas fa-sparkles"></i> AI Recommendations
+             </div>
+             <div class="ai-result-item" *ngFor="let product of aiResults()" (mousedown)="selectAiProduct(product)">
+               <img [src]="product.image" [alt]="product.title">
+               <div class="result-info">
+                 <span class="result-title">{{ product.title }}</span>
+                 <span class="result-category">{{ product.category }}</span>
+               </div>
+               <span class="result-price">{{ product.price | currency }}</span>
+             </div>
           </div>
         </div>
 
@@ -410,6 +432,89 @@ import { AuthService } from '../../core/services/auth.service';
     .search-clear:hover {
       background: var(--surface-300);
       color: var(--text-main);
+    }
+
+    .ai-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0 0.5rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-toggle-btn.active {
+      color: #a855f7;
+      filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.4));
+    }
+
+    .ai-results-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border: 1px solid #f3f4f6;
+      overflow: hidden;
+      z-index: 1001;
+    }
+
+    .ai-results-header {
+      padding: 0.75rem 1rem;
+      background: #f9fafb;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ai-result-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ai-result-item:hover {
+      background: #f3f4f6;
+    }
+
+    .ai-result-item img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .result-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #111827;
+    }
+
+    .result-category {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .result-price {
+      font-weight: 600;
+      color: #6366f1;
+      font-size: 0.9rem;
     }
 
     /* Actions */
@@ -817,6 +922,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   wishlistService = inject(WishlistService);
   themeService = inject(ThemeService);
   authService = inject(AuthService);
+  private aiService = inject(AiService);
   private router = inject(Router);
 
   searchQuery = '';
@@ -824,6 +930,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
   isSearchFocused = false;
   isScrolled = false;
+  isAiSearch = false;
+  aiResults = signal<any[]>([]);
 
   private searchSubject$ = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -860,7 +968,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSearchInput(value: string) {
+    if (this.isAiSearch && value.trim().length > 2) {
+      this.aiService.search(value).subscribe(results => {
+        this.aiResults.set(results);
+      });
+    }
     this.searchSubject$.next(value);
+  }
+
+  toggleAiSearch() {
+    this.isAiSearch = !this.isAiSearch;
+    if (!this.isAiSearch) {
+      this.aiResults.set([]);
+    }
+  }
+
+  onBlur() {
+    setTimeout(() => {
+      this.isSearchFocused = false;
+    }, 200);
+  }
+
+  selectAiProduct(product: any) {
+    this.router.navigate(['/products', product.id]);
+    this.clearSearch();
+    this.aiResults.set([]);
   }
 
   submitSearch() {
